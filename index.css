@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #0b0909;
+    color: #f1e8dc;
+    scroll-behavior: auto;
+  }
+  body {
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  ::selection {
+    background: #b66a36;
+    color: #0b0909;
+  }
+}
+
+@layer components {
+  .glow-word {
+    background-image: linear-gradient(#c9a477, #c9a477);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.6s cubic-bezier(0.22, 1, 0.36, 1), text-shadow 0.6s ease, color 0.6s ease;
+    padding-bottom: 0.1em;
+  }
+  .glow-word:hover,
+  .glow-word:focus-visible {
+    background-size: 100% 1px;
+    color: #c9a477;
+    text-shadow: 0 0 24px rgba(182, 106, 54, 0.55);
+  }
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.animate-drip {
+  animation: drip 2.4s ease-in-out infinite;
+}
+
+.cine-text {
+  text-shadow: 0 1px 18px rgba(10, 5, 3, 0.65), 0 0 2px rgba(10, 5, 3, 0.35);
+}
+
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+.grain {
+  animation: grain-shift 0.9s steps(5) infinite;
+  inset: -10% !important;
+  width: 120%;
+  height: 120%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drip,
+  .grain {
+    animation: none;
+  }
+}
+
+/* Cinematic text rendering: favour crisp typography over expensive blur filters. */
+.cine-text {
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  overflow-wrap: break-word;
+}
+.cine-text h1,
+.cine-text h2,
+.cine-text blockquote,
+.cine-text p {
+  backface-visibility: hidden;
+}
+.cine-text [data-phrase] {
+  will-change: opacity, transform;
+}
+@media (max-width: 640px) {
+  .cine-text {
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .cine-text h1,
+  .cine-text h2 {
+    letter-spacing: -0.025em;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cine-text *,
+  .cine-text *::before,
+  .cine-text *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
